@@ -27,6 +27,12 @@ var yelp = new Yelp({
 
 	app.route('/')
 		.get(function (req, res) {
+			
+			var loggedin = req.isAuthenticated;
+     
+     //check if user is logged in
+
+             
 		//	console.log(req.headers['x-forwarded-for']);
 			console.log("index loaded")
 	
@@ -74,5 +80,10 @@ app.post('/',  upload.array(), function (req, res, next) {
 
 
 
+app.use(passport.initialize());
+app.use(passport.session());
+//Base case user visits home screen
+
 
 };
+
