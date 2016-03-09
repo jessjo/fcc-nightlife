@@ -49,11 +49,10 @@ app.post('/',  upload.array(), function (req, res, next) {
   					for (var i=0; i< data.businesses.length; i++){
   						biz+="<div id='biz'><h4><a href='" +data.businesses[i].url +"'>";
   						biz+= data.businesses[i].name+"</a></h4>";
-  						biz+= "<img src='" + data.businesses[i].snippet_image_url+"'>";
+  						biz+= "<img src='" + data.businesses[i].image_url+"'>";
   						biz += data.businesses[i].snippet_text;
   					}
   					biz +="</div>"
-  					console.log(biz);
   					
   					
   					var data = {
