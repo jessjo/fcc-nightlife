@@ -2,6 +2,8 @@
 
 var path = process.cwd();
 var Yelp = require('yelp');
+var multer  = require('multer');
+var upload = multer({ dest: 'uploads/' });
 
 module.exports = function (app, passport) {
 /** save
@@ -22,9 +24,15 @@ var yelp = new Yelp({
 
 	app.route('/')
 		.get(function (req, res) {
-			console.log(req.headers['x-forwarded-for']);
-			
-			yelp.search({ term: 'food', location: 'Montreal' })
+		//	console.log(req.headers['x-forwarded-for']);
+			console.log("index loaded")
+		
+			res.sendFile(path + '/public/index.html');
+		});
+
+app.post('/',  upload.array(), function (req, res, next) {
+		console.log("location:" req.body.location);
+		yelp.search({ term: 'nightlife', location: req.body.location })
 				.then(function (data) {
   					console.log(data);
 				})
@@ -32,9 +40,7 @@ var yelp = new Yelp({
   					console.error(err);
 				});
 
-			res.sendFile(path + '/public/index.html');
-		});
-
+});
 
 
 

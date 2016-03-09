@@ -2,24 +2,6 @@
 
 <html>
 
-<script>
-var lat,long;
-function onLoadSet() {
-
-
-  if (navigator.geolocation) {
-
-    navigator.geolocation.getCurrentPosition(function(position) {
-
-      lat = position.coords.latitude;
-      long = position.coords.longitude;
-
-    });
-
-  }
-}
-
-onLoadSet();
 
 
 
@@ -38,8 +20,9 @@ onLoadSet();
 	</header>
 
 	<body>
-	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/create">
-      <input type="submit" value="What's going on?" id="submit" />
+	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/">
+      <input type="text" name="location" placeholder="Enter your location">
+      <input type="submit" value="What the hooooot?" id="submit" />
       </form>
 	</body>
 
