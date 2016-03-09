@@ -4,6 +4,9 @@ var path = process.cwd();
 var Yelp = require('yelp');
 var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
+var handlebars  = require('handlebars');
+var fs = require('fs');
+
 
 module.exports = function (app, passport) {
 /** save
@@ -26,22 +29,31 @@ var yelp = new Yelp({
 		.get(function (req, res) {
 		//	console.log(req.headers['x-forwarded-for']);
 			console.log("index loaded")
-		
-			res.sendFile(path + '/public/index.html');
+		var data = {
+              
+           }
+    
+        fs.readFile('public/index.html', 'utf-8', function(error, source){
+                var template = handlebars.compile(source);
+                var html = template(data);
+                res.send(html);
+           
+                }); 
 		});
 
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
-					var html="<div>"
+					var biz="<div>"
   					for (var i=0; i< data.businesses.length; i++){
-  						html+="<h4>"+data.businesses[i].name+"</h4>";
-  						console.log(data.businesses[i].snippet_image_url);
-  						console.log(data.businesses[i].snippet_text);
-  						console.log(data.businesses[i].url);
+  						biz+="<div id='biz'><h4><a href='" +data.businesses[i].url +"'>";
+  						biz+= data.businesses[i].name+"</a></h4>";
+  						biz+= "<img src='" + data.businesses[i].snippet_image_url+"'>";
+  						biz += data.businesses[i].snippet_text;
   					}
-  					html +="</div>"
+  					biz +="</div>"
+  					console.log(biz);
 				})
 			   .catch(function (err) {
   					console.error(err);
