@@ -18,6 +18,8 @@ function onLoadSet() {
 
   }
 }
+
+onLoadSet();
 </script>
 	<head>
 		<title>NightOwl Night Life App</title>
@@ -33,8 +35,9 @@ function onLoadSet() {
 	</header>
 
 	<body>
-	
-
+	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/create">
+      <input type="submit" value="What's going on?" id="submit" />
+      </form>
 	</body>
 
 </html>
