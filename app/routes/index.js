@@ -29,10 +29,10 @@ var yelp = new Yelp({
 		.get(function (req, res) {
 		//	console.log(req.headers['x-forwarded-for']);
 			console.log("index loaded")
+	
 		var data = {
-              
            }
-    
+    //loads index with no nightlife data
         fs.readFile('public/index.html', 'utf-8', function(error, source){
                 var template = handlebars.compile(source);
                 var html = template(data);
@@ -54,6 +54,18 @@ app.post('/',  upload.array(), function (req, res, next) {
   					}
   					biz +="</div>"
   					console.log(biz);
+  					
+  					
+  					var data = {
+  						nightlife: biz
+           			}
+           			
+  					fs.readFile('public/index.html', 'utf-8', function(error, source){
+            			 var template = handlebars.compile(source);
+                		 var html = template(data);
+                		 res.send(html);
+               		}); 
+  					
 				})
 			   .catch(function (err) {
   					console.error(err);
