@@ -31,10 +31,17 @@ var yelp = new Yelp({
 		});
 
 app.post('/',  upload.array(), function (req, res, next) {
-		console.log("location:" req.body.location);
-		yelp.search({ term: 'nightlife', location: req.body.location })
+		console.log("location:" + req.body["location"]);
+		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
-  					console.log(data);
+					var html="<div>"
+  					for (var i=0; i< data.businesses.length; i++){
+  						html+="<h4>"+data.businesses[i].name+"</h4>";
+  						console.log(data.businesses[i].snippet_image_url);
+  						console.log(data.businesses[i].snippet_text);
+  						console.log(data.businesses[i].url);
+  					}
+  					html +="</div>"
 				})
 			   .catch(function (err) {
   					console.error(err);
