@@ -2,6 +2,23 @@
 
 <html>
 
+<script>
+var lat,long;
+function onLoadSet() {
+
+
+  if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+
+      lat = position.coords.latitude;
+      long = position.coords.longitude;
+
+    });
+
+  }
+}
+</script>
 	<head>
 		<title>NightOwl Night Life App</title>
 		
