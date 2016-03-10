@@ -11,7 +11,9 @@ var Users = require('../models/users.js');
 
 
 
+
 module.exports = function (app, passport) {
+
 
 var yelp = new Yelp({
   consumer_key: process.env.YELP_KEY,

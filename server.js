@@ -8,6 +8,8 @@ var session = require('express-session');
 var Yelp = require('yelp');
 
 var app = express();
+//require('./app/config/passport')(passport);
+require('dotenv').load();
 
 app.use(session({
     secret: 'secretpasswordsecretsecret',
@@ -18,8 +20,8 @@ app.use(session({
 	app.use(passport.session());
 	
 
-require('dotenv').load();
-require('./app/config/passport')(passport);
+
+
 
 mongoose.connect(process.env.MONGO_URI);
 

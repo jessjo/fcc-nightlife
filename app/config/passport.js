@@ -5,6 +5,7 @@ var User = require('../models/users');
 var configAuth = require('./auth');
 var session = require('express-session');
 
+
 module.exports = function (passport) {
 	passport.serializeUser(function (user, done) {
 		done(null, user.id);
@@ -15,12 +16,14 @@ module.exports = function (passport) {
 			done(err, user);
 		});
 	});
-
+require('dotenv').load();
 passport.use(new TwitterStrategy({
+    
 
-        consumerKey     : configAuth.twitterAuth.clientID,
-        consumerSecret  : configAuth.twitterAuth.clientSecret,
-        callbackURL     : configAuth.twitterAuth.callbackURL
+
+        consumerKey     : process.env.TWITTER_KEY,
+        consumerSecret  : process.env.TWITTER_SECRET,
+        callbackURL     : process.env.APP_URL + 'auth/twitter/callback'
 
     },
     function(token, tokenSecret, profile, done) {
