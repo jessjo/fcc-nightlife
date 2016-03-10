@@ -85,12 +85,13 @@ app.post('/',  upload.array(), function (req, res, next) {
 
 });
 
-app.get('/auth/twitter', passport.authenticate('twitter'));
+app.route('/auth/twitter')
+.get(passport.authenticate('twitter'));
 
 
     // handle the callback after twitter has authenticated the user
-app.get('/auth/twitter/callback',
-        passport.authenticate('twitter', {
+app.route('/auth/twitter/callback')
+       .get(passport.authenticate('twitter', {
             successRedirect : '/',
             failureRedirect : '/'
         }));
@@ -110,7 +111,7 @@ app.get('/auth/twitter/callback',
 	console.log(loggedin);
        
         
-       // res.redirect('/');
+       res.redirect('/login');
     });
 
 };
@@ -125,6 +126,6 @@ function isLoggedIn(req, res, next) {
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect('/login');
 }
 
