@@ -31,7 +31,12 @@ var yelp = new Yelp({
 	app.route('/')
 		.get(function (req, res) {
 			
-			var loggedin = req.isAuthenticated;
+		var loggedin;
+			if (req.isAuthenticated){
+				 loggedin = true;
+			} else{
+		 		loggedin=false;
+			}
      
      //check if user is logged in
 
@@ -40,6 +45,7 @@ var yelp = new Yelp({
 			console.log("index loaded")
 	
 		var data = {
+			loggedin: loggedin
            }
     //loads index with no nightlife data
         fs.readFile('public/index.html', 'utf-8', function(error, source){
@@ -52,6 +58,13 @@ var yelp = new Yelp({
 
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
+		var loggedin;
+		if (req.isAuthenticated){
+		 loggedin = true;
+		} else{
+		 loggedin=false;
+		}
+		console.log(loggedin);
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
 					var biz="<div>"
@@ -65,7 +78,8 @@ app.post('/',  upload.array(), function (req, res, next) {
   					
   					
   					var data = {
-  						nightlife: biz
+  						nightlife: biz,
+  						loggedin: loggedin
            			}
            			
   					fs.readFile('public/index.html', 'utf-8', function(error, source){

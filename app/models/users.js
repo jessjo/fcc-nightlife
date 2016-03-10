@@ -10,8 +10,8 @@ var User = new Schema({
         displayName  : String,
         username     : String
     },
-   nbrClicks: {
-      clicks: Number
+   location: {
+      location: String
    }
 });
 

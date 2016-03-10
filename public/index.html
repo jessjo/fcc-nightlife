@@ -22,10 +22,17 @@
 	</header>
 
 	<body>
-		<p>Login or Register with:</p>
+		{{#if loggedin}}
+	      {{{accountinfo}}}
+	      
+	      Hiii
+      {{else}}
+      	<p>Login or Register with:</p>
 
         <a href="/auth/twitter" class="btn btn-info"><span class="fa fa-twitter"></span> Twitter</a>
         <br/>
+      {{/if}}
+        
 	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/">
       <input type="text" name="location" placeholder="Enter your location">
       <input type="submit" value="What the hooooot?" id="submit" />
