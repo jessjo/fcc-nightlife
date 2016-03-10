@@ -18,9 +18,9 @@ module.exports = function (passport) {
 
 passport.use(new TwitterStrategy({
 
-        consumerKey     : process.env.TWITTER_KEY,
-        consumerSecret  : process.env.TWITTER_SECRET,
-        callbackURL     : process.env.APP_URL+'auth/twitter/callback'
+        consumerKey     : configAuth.twitterAuth.clientID,
+        consumerSecret  : configAuth.twitterAuth.clientSecret,
+        callbackURL     : configAuth.twitterAuth.callbackURL
 
     },
     function(token, tokenSecret, profile, done) {
@@ -48,7 +48,7 @@ passport.use(new TwitterStrategy({
                     newUser.twitter.token       = token;
                     newUser.twitter.username    = profile.username;
                     newUser.twitter.displayName = profile.displayName;
-
+                    console.log(newUser);
                     // save our user into the database
                     newUser.save(function(err) {
                         if (err)

@@ -7,18 +7,12 @@ var upload = multer({ dest: 'uploads/' });
 var handlebars  = require('handlebars');
 var fs = require('fs');
 var session = require('express-session');
+var Users = require('../models/users.js');
+
 
 
 module.exports = function (app, passport) {
-/** save
-	function isLoggedIn (req, res, next) {
-		if (req.isAuthenticated()) {
-			return next();
-		} else {
-			res.redirect('/login');
-		}
-	}
-**/
+
 var yelp = new Yelp({
   consumer_key: process.env.YELP_KEY,
   consumer_secret: process.env.YELP_SECRET,
@@ -30,20 +24,15 @@ var yelp = new Yelp({
 
 	app.route('/')
 		.get(function (req, res) {
-			
+
 		var loggedin;
 			if (req.isAuthenticated){
 				 loggedin = true;
 			} else{
 		 		loggedin=false;
 			}
-     
-     //check if user is logged in
 
-             
-		//	console.log(req.headers['x-forwarded-for']);
-			console.log("index loaded")
-	
+//	console.log(req.session.passport.user)
 		var data = {
 			loggedin: loggedin
            }
@@ -64,7 +53,8 @@ app.post('/',  upload.array(), function (req, res, next) {
 		} else{
 		 loggedin=false;
 		}
-		console.log(loggedin);
+		console.log("user" + res.user);
+		console.log(loggedin)
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
 					var biz="<div>"
@@ -106,10 +96,26 @@ app.get('/auth/twitter/callback',
         }));
 
 
-//Base case user visits home screen
+//logout
+  app.get('/logout', function(req, res) {
+        console.log("heey")
+         req.logout();
+        var loggedin;
+        	if (req.isAuthenticated){
+				 loggedin = true;
+			} else{
+		 		loggedin=false;
+			}
 
+	console.log(loggedin);
+       
+        
+       // res.redirect('/');
+    });
 
 };
+
+
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

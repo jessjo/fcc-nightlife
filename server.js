@@ -10,7 +10,7 @@ var Yelp = require('yelp');
 var app = express();
 
 app.use(session({
-    secret: 'secretpassword',
+    secret: 'secretpasswordsecretsecret',
     resave: false,
     saveUninitialized: true
 }));

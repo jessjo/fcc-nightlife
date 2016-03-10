@@ -10,9 +10,9 @@ var User = new Schema({
         displayName  : String,
         username     : String
     },
-   location: {
-      location: String
-   }
+    Nightclub :{
+        nightclub: String
+    }
 });
 
 module.exports = mongoose.model('User', User);
