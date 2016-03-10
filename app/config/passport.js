@@ -1,8 +1,9 @@
 'use strict';
 
-var TwitterStrategy = require('passport-github').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
 var User = require('../models/users');
 var configAuth = require('./auth');
+var session = require('express-session');
 
 module.exports = function (passport) {
 	passport.serializeUser(function (user, done) {
@@ -15,38 +16,49 @@ module.exports = function (passport) {
 		});
 	});
 
-	passport.use(new GitHubStrategy({
-		clientID: configAuth.githubAuth.clientID,
-		clientSecret: configAuth.githubAuth.clientSecret,
-		callbackURL: configAuth.githubAuth.callbackURL
-	},
-	function (token, refreshToken, profile, done) {
-		process.nextTick(function () {
-			User.findOne({ 'github.id': profile.id }, function (err, user) {
-				if (err) {
-					return done(err);
-				}
+passport.use(new TwitterStrategy({
 
-				if (user) {
-					return done(null, user);
-				} else {
-					var newUser = new User();
+        consumerKey     : process.env.TWITTER_KEY,
+        consumerSecret  : process.env.TWITTER_SECRET,
+        callbackURL     : process.env.APP_URL+'auth/twitter/callback'
 
-					newUser.github.id = profile.id;
-					newUser.github.username = profile.username;
-					newUser.github.displayName = profile.displayName;
-					newUser.github.publicRepos = profile._json.public_repos;
-					newUser.nbrClicks.clicks = 0;
+    },
+    function(token, tokenSecret, profile, done) {
 
-					newUser.save(function (err) {
-						if (err) {
-							throw err;
-						}
+        // make the code asynchronous
+    // User.findOne won't fire until we have all our data back from Twitter
+        process.nextTick(function() {
 
-						return done(null, newUser);
-					});
-				}
-			});
-		});
-	}));
+            User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
+
+                // if there is an error, stop everything and return that
+                // ie an error connecting to the database
+                if (err)
+                    return done(err);
+
+                // if the user is found then log them in
+                if (user) {
+                    return done(null, user); // user found, return that user
+                } else {
+                    // if there is no user, create them
+                    var newUser                 = new User();
+
+                    // set all of the user data that we need
+                    newUser.twitter.id          = profile.id;
+                    newUser.twitter.token       = token;
+                    newUser.twitter.username    = profile.username;
+                    newUser.twitter.displayName = profile.displayName;
+
+                    // save our user into the database
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+            });
+
+    });
+
+    }));
 };

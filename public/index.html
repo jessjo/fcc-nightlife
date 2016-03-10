@@ -10,6 +10,8 @@
 		<title>NightOwl Night Life App</title>
 		
 		<link href="/public/css/main.css" rel="stylesheet" type="text/css">
+      <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">	
 	</head>
 
 	<header>
@@ -20,6 +22,10 @@
 	</header>
 
 	<body>
+		<p>Login or Register with:</p>
+
+        <a href="/auth/twitter" class="btn btn-info"><span class="fa fa-twitter"></span> Twitter</a>
+        <br/>
 	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/">
       <input type="text" name="location" placeholder="Enter your location">
       <input type="submit" value="What the hooooot?" id="submit" />

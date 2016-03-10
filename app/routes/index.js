@@ -6,6 +6,7 @@ var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 var handlebars  = require('handlebars');
 var fs = require('fs');
+var session = require('express-session');
 
 
 module.exports = function (app, passport) {
@@ -24,6 +25,8 @@ var yelp = new Yelp({
   token: process.env.YELP_TOKEN,
   token_secret: process.env.YELP_TOKEN_SECRET,
 });
+
+
 
 	app.route('/')
 		.get(function (req, res) {
@@ -78,17 +81,17 @@ app.post('/',  upload.array(), function (req, res, next) {
 
 });
 
- app.get('/auth/twitter', passport.authenticate('twitter'));
+app.get('/auth/twitter', passport.authenticate('twitter'));
+
 
     // handle the callback after twitter has authenticated the user
-    app.get('/auth/twitter/callback',
+app.get('/auth/twitter/callback',
         passport.authenticate('twitter', {
-            successRedirect : '/profile',
+            successRedirect : '/',
             failureRedirect : '/'
         }));
 
-app.use(passport.initialize());
-app.use(passport.session());
+
 //Base case user visits home screen
 
 
