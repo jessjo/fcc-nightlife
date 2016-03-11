@@ -10,7 +10,7 @@ var User = new Schema({
         displayName  : String,
         username     : String
     },
-    Nightclub :{
+    nightclub :{
         nightclub: String
     }
 });

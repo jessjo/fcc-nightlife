@@ -14,7 +14,16 @@ var Users = require('../models/users.js');
 
 module.exports = function (app, passport) {
 
-
+//Express middleware checks log in status
+function isLoggedIn (req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        } else {
+            res.redirect('/login');
+        }
+    }
+    
+//Yelp keys
 var yelp = new Yelp({
   consumer_key: process.env.YELP_KEY,
   consumer_secret: process.env.YELP_SECRET,
