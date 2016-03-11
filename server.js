@@ -3,21 +3,18 @@
 var express = require('express');
 var routes = require('./app/routes/index.js');
 var mongoose = require('mongoose');
-var passport = require('passport');
 var session = require('express-session');
 var Yelp = require('yelp');
 
 var app = express();
-//require('./app/config/passport')(passport);
 require('dotenv').load();
 
 app.use(session({
-    secret: 'secretpasswordsecretsecret',
+    secret: 'secretpasswordsecretyessecret',
     resave: false,
     saveUninitialized: true
 }));
-	app.use(passport.initialize());
-	app.use(passport.session());
+
 	
 
 
@@ -27,7 +24,7 @@ mongoose.connect(process.env.MONGO_URI);
 
 
 
-routes(app, passport);
+routes(app);
 
 var port = process.env.PORT || 8080;
 app.listen(port,  function () {

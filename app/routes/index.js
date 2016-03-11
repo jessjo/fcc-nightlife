@@ -27,16 +27,10 @@ var yelp = new Yelp({
 	app.route('/')
 		.get(function (req, res) {
 
-		var loggedin;
-			if (req.isAuthenticated){
-				 loggedin = true;
-			} else{
-		 		loggedin=false;
-			}
 
 //	console.log(req.session.passport.user)
 		var data = {
-			loggedin: loggedin
+
            }
     //loads index with no nightlife data
         fs.readFile('public/index.html', 'utf-8', function(error, source){
@@ -49,14 +43,9 @@ var yelp = new Yelp({
 
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
-		var loggedin;
-		if (req.isAuthenticated){
-		 loggedin = true;
-		} else{
-		 loggedin=false;
-		}
-		console.log("user" + res.user);
-		console.log(loggedin)
+	
+	//	console.log("user" + res.user);
+
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
 					var biz="<div>"
@@ -71,7 +60,6 @@ app.post('/',  upload.array(), function (req, res, next) {
   					
   					var data = {
   						nightlife: biz,
-  						loggedin: loggedin
            			}
            			
   					fs.readFile('public/index.html', 'utf-8', function(error, source){
@@ -87,47 +75,11 @@ app.post('/',  upload.array(), function (req, res, next) {
 
 });
 
-app.route('/auth/twitter')
-.get(passport.authenticate('twitter'));
 
 
-    // handle the callback after twitter has authenticated the user
-app.route('/auth/twitter/callback')
-       .get(passport.authenticate('twitter', {
-            successRedirect : '/',
-            failureRedirect : '/'
-        }));
-
-
-//logout
-  app.get('/logout', function(req, res) {
-        console.log("heey")
-         req.logout();
-        var loggedin;
-        	if (req.isAuthenticated){
-				 loggedin = true;
-			} else{
-		 		loggedin=false;
-			}
-
-	console.log(loggedin);
-       
-        
-       res.redirect('/login');
-    });
 
 };
 
 
 
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
-        return next();
-
-    // if they aren't redirect them to the home page
-    res.redirect('/login');
-}
 
