@@ -35,11 +35,15 @@ var yelp = new Yelp({
 
 	app.route('/')
 		.get(function (req, res) {
-
-
+		   var loggedin;
+             if (req.isAuthenticated()) {
+                 loggedin = true;
+             } else {
+                  loggedin = false;
+             }
 //	console.log(req.session.passport.user)
 		var data = {
-
+                loggedin: loggedin
            }
     //loads index with no nightlife data
         fs.readFile('public/index.html', 'utf-8', function(error, source){
@@ -84,7 +88,25 @@ app.post('/',  upload.array(), function (req, res, next) {
 
 });
 
-
+app.route('/login')
+    .get(function (req, res) {
+        res.sendFile(path + '/public/login.html');
+    });
+    
+app.route('/logout')
+    .get(function (req, res) {
+        req.logout();
+        res.redirect('/login');
+    });
+    
+app.route('/auth/twitter')
+    .get(passport.authenticate('twitter'));
+    
+app.route('/auth/twitter/callback')
+    .get(passport.authenticate('twitter', {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }));
 
 
 };
