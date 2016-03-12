@@ -86,6 +86,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     if(nightclub){
                                         partygoers = nightclub.users.length;
                                     //TODO add in what to do if I'M going to the nightclub
+                                    //if (req.user ...)
                                     } else {
                                          partygoers = 0;
                                     }
