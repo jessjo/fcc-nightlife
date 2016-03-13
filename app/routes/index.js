@@ -75,7 +75,6 @@ app.post('/',  upload.array(), function (req, res, next) {
   						     var name = data.businesses[i].name;
   						     var imgURL = data.businesses[i].image_url;
   					    	 var snippet = data.businesses[i].snippet_text;
-  					    	 console.log("yo");
   				    
                              
                             var getTheSearch = function (callback){
