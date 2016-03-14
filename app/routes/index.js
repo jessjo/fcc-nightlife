@@ -89,8 +89,10 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     } else {
                                          partygoers = 0;
                                     }
-                        
+                                
+                                     return partygoers
                                 });
+                                
                             }   
                         
                             var formatting = function(partygoers){
@@ -100,6 +102,8 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            biz += snippet;
                             }
   					}
+  					
+  					getTheSearch(formatting);
   				         biz +="</div>"
   				
   					            //inserts biz info via handlebars
