@@ -67,18 +67,20 @@ app.post('/',  upload.array(), function (req, res, next) {
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
 					var biz="<div>"
-					
+					var last = false;
   					for (var i=0; i< data.businesses.length; i++){
   					    //for each biz id I should find if the id exists. if it doesn't I can assume no one is there. I'm choosing to only create id on check in to save space.
   					  
-                            
+                            //all relevant info from API for businesses
                              var url =  data.businesses[i].url;
   						     var name = data.businesses[i].name;
   						     var imgURL = data.businesses[i].image_url;
   					    	 var snippet = data.businesses[i].snippet_text;
-  				    
+  				            if (i == data.businesses.length -1){
+  				                last = true;
+  				            }
                              
-                            var getTheSearch = function (callback, url, name, imgURL, snippet){
+                            var getTheSearch = function (callback, url, name, imgURL, snippet, last){
                                 var partygoers;
 
   		                         Nightclubs.findOne({ 'id': data.businesses[i].id }, function (err, nightclub) {
@@ -90,13 +92,13 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     } else {
                                          partygoers = 0;
                                     }
-                                    callback(partygoers, url,name, imgURL, snippet);
+                                    callback(partygoers, url,name, imgURL, snippet, last);
                                 });
                             
                                 
                             }   
                         
-                            var formatting = function(partygoers, url, name, imgURL, snippet){
+                            var formatting = function(partygoers, url, name, imgURL, snippet, last){
                                 biz+="<div id='biz'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
@@ -104,9 +106,21 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                             biz += partygoers + " people give a hoot!"
   	                             biz +="</div>"
   	                            console.log(biz);
+  	                            if (last){
+  	                                var data = {
+  						                nightlife: biz,
+  					            	    loggedin: loggedin
+           		                	}
+           		            	    fs.readFile('public/index.html', 'utf-8', function(error, source){
+            			                var template = handlebars.compile(source);
+                		                var html = template(data);
+                		                 res.send(html);
+               	            	    }); 
+  	                                
+  	                            }
                             }
                             
-                            	getTheSearch(formatting, url, name, imgURL, snippet);
+                            getTheSearch(formatting, url, name, imgURL, snippet, last);
   				        
   		
   					}
@@ -114,15 +128,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   				
   				
   					            //inserts biz info via handlebars
-  				            	var data = {
-  						            nightlife: biz,
-  					            	loggedin: loggedin
-           		            	}
-           		            	fs.readFile('public/index.html', 'utf-8', function(error, source){
-            			             var template = handlebars.compile(source);
-                		            var html = template(data);
-                		             res.send(html);
-               	            	});  
+  				            	 
   					
 				})
 			   .catch(function (err) {
