@@ -101,10 +101,12 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
                             }
+                            
+                            	getTheSearch(formatting);
+  				         biz +="</div>"
   					}
   					
-  					getTheSearch(formatting);
-  				         biz +="</div>"
+  				
   				
   					            //inserts biz info via handlebars
   				            	var data = {
