@@ -2,7 +2,7 @@
 
 var express = require('express');
 var routes = require('./app/routes/index.js');
-var checkins = require('./app/routes/checkins.js');
+var checkins = require('./app/routes/checkin.js');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');

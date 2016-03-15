@@ -13,8 +13,9 @@ var Nightclubs = require('../models/nightlife.js');
 module.exports = function (app, passport) {
 
 
-app.route('/checkins/:checkinID')
+app.route('/checkin/:checkinID')
   .get(function (req, res) {
+       res.sendFile(path + '/public/checkin.html');
       
-  });
+  })
 }
