@@ -80,7 +80,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                             var getTheSearch = function (callback){
                                 var partygoers;
 
-  		                        Nightclubs.findOne({ 'id': data.businesses[i].id }, function (err, nightclub) {
+  		                         Nightclubs.findOne({ 'id': data.businesses[i].id }, function (err, nightclub) {
                                     if (err) throw err;
                                     if(nightclub){
                                         partygoers = nightclub.users.length;
@@ -89,9 +89,9 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     } else {
                                          partygoers = 0;
                                     }
-                                
-                                     return partygoers
+                                    callback(partygoers);
                                 });
+                            
                                 
                             }   
                         
@@ -100,10 +100,15 @@ app.post('/',  upload.array(), function (req, res, next) {
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
+  	                             biz += partygoers + " people give a hoot!"
+  	                             biz +="</div>"
+  	                            
+  	                         console.log(biz);
                             }
                             
                             	getTheSearch(formatting);
-  				         biz +="</div>"
+  				        
+  		
   					}
   					
   				
