@@ -2,6 +2,7 @@
 
 var express = require('express');
 var routes = require('./app/routes/index.js');
+var checkins = require('./app/routes/checkins.js');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
@@ -30,6 +31,7 @@ mongoose.connect(process.env.MONGO_URI);
 
 
 routes(app, passport);
+checkins(app, passport);
 
 var port = process.env.PORT || 8080;
 app.listen(port,  function () {
