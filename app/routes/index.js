@@ -103,7 +103,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
-  	                             biz += partygoers + " people give a hoot!"
+  	                             biz += "<p><b>"+partygoers + " people give a hoot!</b></p>"
   	                             biz +="</div>"
   	                            console.log(biz);
   	                            if (last){

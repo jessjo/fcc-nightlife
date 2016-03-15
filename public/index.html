@@ -15,29 +15,28 @@
 	</head>
 
 	<header>
-		<p>Welcome, <span id="display-name"></span>!</p>
-		<a class="menu" href="/profile">Profile</a>
-		<p>|</p>
-		<a class="menu" href="/logout">Logout</a>
+
 	</header>
 
 	<body>
 		{{#if loggedin}}
 	      {{{accountinfo}}}
 	      
-	      Hiii
+	      You are logged in.
+	      
       {{else}}
       	<p>Login or Register with:</p>
 
         <a href="/auth/twitter" class="btn btn-info"><span class="fa fa-twitter"></span> Twitter</a>
         <br/>
       {{/if}}
-        
+       <p/><p/> <center>
 	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/">
       <input type="text" name="location" placeholder="Enter your location">
       <input type="submit" value="What the hooooot?" id="submit" />
       </form>
       {{{nightlife}}}
+      </center>
 	</body>
 
 </html>
