@@ -33,7 +33,7 @@ var yelp = new Yelp({
 
 
 
-	app.route('/')
+app.route('/')
 		.get(function (req, res) {
 		   var loggedin;
              if (req.isAuthenticated()) {
@@ -76,11 +76,12 @@ app.post('/',  upload.array(), function (req, res, next) {
   						     var name = data.businesses[i].name;
   						     var imgURL = data.businesses[i].image_url;
   					    	 var snippet = data.businesses[i].snippet_text;
+  					    	 var id = data.businesses[i].id;
   				            if (i == data.businesses.length -1){
   				                last = true;
   				            }
                              
-                            var getTheSearch = function (callback, url, name, imgURL, snippet, last){
+                            var getTheSearch = function (callback, url, name, imgURL, snippet, id, last){
                                 var partygoers;
 
   		                         Nightclubs.findOne({ 'id': data.businesses[i].id }, function (err, nightclub) {
@@ -92,18 +93,19 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     } else {
                                          partygoers = 0;
                                     }
-                                    callback(partygoers, url,name, imgURL, snippet, last);
+                                    callback(partygoers, url,name, imgURL, snippet, id, last);
                                 });
                             
                                 
                             }   
                         
-                            var formatting = function(partygoers, url, name, imgURL, snippet, last){
+                            var formatting = function(partygoers, url, name, imgURL, snippet, id, last){
                                 biz+="<div id='biz'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
-  	                             biz += "<p><b>"+partygoers + " people give a hoot!</b></p>"
+  	                             biz += "<p><b>"+partygoers + " people give a hoot!</b>"
+                                biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
   	                             biz +="</div>"
   	                            console.log(biz);
   	                            if (last){
@@ -120,7 +122,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            }
                             }
                             
-                            getTheSearch(formatting, url, name, imgURL, snippet, last);
+                            getTheSearch(formatting, url, name, imgURL, snippet, id, last);
   				        
   		
   					}
