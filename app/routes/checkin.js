@@ -31,12 +31,14 @@ app.route('/checkin/:checkinID')
        Users.findOne({ 'id': req.id }, function (err, User) {
             if (err) throw err;
             if(User){
-                console.log("the nightclub is: " + User.nightclub.nightclub + "yay");
                 User.nightclub.nightclub = req.params.checkinID;
-                console.log("the nightclub2 is: " + User.nightclub.nightclub + "yay");
             } else{
                 console.log ("err no user");
             }
+        });
+        
+        Nightclubs.findOne({'id':req.params.checkinID}, function(err,Nightclub){
+            if (err) throw err;
         });
         
        res.sendFile(path + '/public/checkin.html');
