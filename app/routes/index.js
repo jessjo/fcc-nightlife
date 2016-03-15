@@ -71,13 +71,14 @@ app.post('/',  upload.array(), function (req, res, next) {
   					for (var i=0; i< data.businesses.length; i++){
   					    //for each biz id I should find if the id exists. if it doesn't I can assume no one is there. I'm choosing to only create id on check in to save space.
   					  
+                            
                              var url =  data.businesses[i].url;
   						     var name = data.businesses[i].name;
   						     var imgURL = data.businesses[i].image_url;
   					    	 var snippet = data.businesses[i].snippet_text;
   				    
                              
-                            var getTheSearch = function (callback){
+                            var getTheSearch = function (callback, url, name, imgURL, snippet){
                                 var partygoers;
 
   		                         Nightclubs.findOne({ 'id': data.businesses[i].id }, function (err, nightclub) {
@@ -89,24 +90,23 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     } else {
                                          partygoers = 0;
                                     }
-                                    callback(partygoers);
+                                    callback(partygoers, url,name, imgURL, snippet);
                                 });
                             
                                 
                             }   
                         
-                            var formatting = function(partygoers){
+                            var formatting = function(partygoers, url, name, imgURL, snippet){
                                 biz+="<div id='biz'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
   	                             biz += partygoers + " people give a hoot!"
   	                             biz +="</div>"
-  	                            
-  	                         console.log(biz);
+  	                            console.log(biz);
                             }
                             
-                            	getTheSearch(formatting);
+                            	getTheSearch(formatting, url, name, imgURL, snippet);
   				        
   		
   					}
