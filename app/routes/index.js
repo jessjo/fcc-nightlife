@@ -45,10 +45,18 @@ function loadIndex(data, res){
 
 app.route('/')
 		.get(function (req, res) {
-		   var loggedin, userloc;
-             if (req.isAuthenticated()) {
+		
+		   var loggedin;
+		   var userloc = "You're not hooting anywhere! Search to find your next hootspot."
+
+            if (req.isAuthenticated()) {
                  loggedin = true;
-                 userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                 if (req.user.nightclub.name != undefined){
+                     if (req.user.nightclub.name.length > 0){
+                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                     } 
+
+                 }
              } else {
                   loggedin = false;
              }
@@ -65,12 +73,19 @@ app.route('/')
             
 		});
 
+
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
-		   var loggedin;
-             if (req.isAuthenticated()) {
+		    var loggedin;
+		     var userloc = "You're not hooting anywhere! Search to find your next hootspot."
+
+		    if (req.isAuthenticated()) {
                  loggedin = true;
-                  console.log ("user location:" + req.user.nightclub.nightclub);
+                 if (req.user.nightclub.name != undefined){
+                     if (req.user.nightclub.name.length > 0){
+                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                     } 
+                 }
              } else {
                   loggedin = false;
              }
@@ -93,7 +108,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   				                last = true;
   				            }
                              
-                            var getTheSearch = function (callback, url, name, imgURL, snippet, id, last){
+                            var getTheSearch = function (callback, url, name, imgURL, snippet, id, last, userloc){
                                 var partygoers;
 
   		                         Nightclubs.findOne({ 'nightclub.id': data.businesses[i].id }, function (err, nightclub) {
@@ -121,13 +136,13 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     }
                                     
                                     //add nightclub this is the only place I get all the data (ex. name)
-                                    callback(partygoers, url,name, imgURL, snippet, id, last);
+                                    callback(partygoers, url,name, imgURL, snippet, id, last, userloc);
                                 });
                             
                                 
                             }   
                         
-                            var formatting = function(partygoers, url, name, imgURL, snippet, id, last){
+                            var formatting = function(partygoers, url, name, imgURL, snippet, id, last, userloc){
                                 biz+="<div id='biz'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
@@ -152,7 +167,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            }
                             }
                             
-                            getTheSearch(formatting, url, name, imgURL, snippet, id, last);
+                            getTheSearch(formatting, url, name, imgURL, snippet, id, last, userloc);
   				        
   		
   					}
