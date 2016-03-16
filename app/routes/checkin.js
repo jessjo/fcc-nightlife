@@ -39,9 +39,10 @@ function removeFromClub(checkinID, userID){
 }    
     
 function addtoClub(checkinID, userID){
-         Nightclubs.findOne({'id':checkinID}, function(err,Nightclub){
+         Nightclubs.findOne({'nightclub.id':checkinID}, function(err,Nightclub){
             if (err) throw err;
             if(Nightclub){
+                console.log("nightclub found");
                 //if nightclub is found just add user to users array
                 console.log ("before add:" +Nightclub.nightclub.users  );
                 Nightclub.nightclub.users.push(userID);
@@ -49,9 +50,11 @@ function addtoClub(checkinID, userID){
                 Nightclub.save();
             } else {
                // create new nightclub object 
-               var  newNightclub = new Nightclub();
+               console.log("nightclub not found");
+               var  newNightclub = new Nightclubs();
                newNightclub.nightclub.id = checkinID;
-               newNightclub.nightclub.users.push(userID);
+               newNightclub.nightclub.users = [userID];
+               console.log (newNightclub.nightclub.users);
                 newNightclub.save(function (err, doc) {
                      if (err) { throw err; }
                 });
@@ -64,15 +67,16 @@ function addtoClub(checkinID, userID){
 app.route('/checkin/:checkinID')
   .get(isLoggedIn, function (req, res) {
     //  console.log(req.user);
-      
+
        Users.findOne({ 'id': req.id }, function (err, User) {
+           console.log("the user is " +User.twitter.id);
             if (err) throw err;
             if(User){
                 console.log("Old location:" + User.nightclub.nightclub);
                 if (User.nightclub.nightclub.length >0){
-                    removeFromClub(User.nightclub.nightclub, req.ID);
+                    removeFromClub(User.nightclub.nightclub, User.twitter.id);
                 }
-                addtoClub(User.nightclub.nightclub, req.ID);
+                addtoClub(User.nightclub.nightclub, User.twitter.id);
                 User.nightclub.nightclub = req.params.checkinID;
                 console.log("New location:" + User.nightclub.nightclub);
                 User.save();
