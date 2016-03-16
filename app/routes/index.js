@@ -59,11 +59,13 @@ app.post('/',  upload.array(), function (req, res, next) {
 		   var loggedin;
              if (req.isAuthenticated()) {
                  loggedin = true;
+                  console.log ("user location:" + req.user.nightclub.nightclub);
              } else {
                   loggedin = false;
              }
+            
 
-
+   //search yelp for nightlife in the location user requested
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
 					var biz="<div>"
@@ -96,6 +98,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     //if (req.user ...)
                     
                                     } else {
+                                        //create new nightclub.
                                          var  newNightclub = new Nightclubs();
                                          newNightclub.nightclub.id = id;
                                          newNightclub.nightclub.users = [];
@@ -124,6 +127,10 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                   
   	                   
   	                            if (last){
+  	                                var status ="";
+  	                                if (loggedin){
+  	                                    status = "";
+  	                                }
   	                                var data = {
   						                nightlife: biz,
   					            	    loggedin: loggedin
