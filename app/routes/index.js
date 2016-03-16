@@ -48,8 +48,7 @@ app.route('/')
 		   var loggedin, userloc;
              if (req.isAuthenticated()) {
                  loggedin = true;
-                 console.log ("user location:" + req.user.nightclub.name);
-                 userloc = req.user.nightclub.nightclub.name;
+                 userloc = "You're currently hooting at:" +req.user.nightclub.name;
              } else {
                   loggedin = false;
              }
@@ -57,7 +56,8 @@ app.route('/')
 
 
 		   var data = {
-                 loggedin: loggedin
+                 loggedin: loggedin,
+                 accountinfo: userloc
            }
             
          loadIndex(data,res);
