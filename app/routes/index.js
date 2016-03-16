@@ -84,10 +84,10 @@ app.post('/',  upload.array(), function (req, res, next) {
                             var getTheSearch = function (callback, url, name, imgURL, snippet, id, last){
                                 var partygoers;
 
-  		                         Nightclubs.findOne({ 'id': data.businesses[i].id }, function (err, nightclub) {
+  		                         Nightclubs.findOne({ 'nightclub.id': data.businesses[i].id }, function (err, nightclub) {
                                     if (err) throw err;
                                     if(nightclub){
-                                        partygoers = nightclub.users.length;
+                                        partygoers = nightclub.users.length();
                                     //TODO add in what to do if I'M going to the nightclub
                                     //if (req.user ...)
                                     } else {
