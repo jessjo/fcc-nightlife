@@ -45,19 +45,22 @@ function loadIndex(data, res){
 
 app.route('/')
 		.get(function (req, res) {
-		   var loggedin;
+		   var loggedin, userloc;
              if (req.isAuthenticated()) {
                  loggedin = true;
-                 console.log ("user location:" + req.user.nightclub.nightclub);
+                 console.log ("user location:" + req.user.nightclub.name);
+                 userloc = req.user.nightclub.nightclub.name;
              } else {
                   loggedin = false;
              }
 
-		var data = {
-                loggedin: loggedin
+
+
+		   var data = {
+                 loggedin: loggedin
            }
             
-            loadIndex(data,res);
+         loadIndex(data,res);
             
             
 		});
@@ -143,6 +146,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   						                nightlife: biz,
   					            	    loggedin: loggedin
            		                	}
+           		                	
            		            	    loadIndex(data, res);
   	                                
   	                            }
