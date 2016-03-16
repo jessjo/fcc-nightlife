@@ -115,4 +115,18 @@ app.route('/checkin/:checkinID')
 	
       
   })
+  
+  app.route('/checkout')
+  .get(isLoggedIn, function (req, res) {
+      Users.findOne({ 'id': req.id }, function (err, User) {
+          if (err) throw err;
+          if(User){
+              User.nightclub.nightclub = "";
+              User.nightclub.name = "";
+              User.save();
+          }
+          res.redirect('/')
+      });
+      
+  });
 }

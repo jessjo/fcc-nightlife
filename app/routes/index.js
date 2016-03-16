@@ -48,7 +48,7 @@ app.route('/')
 		   var loggedin, userloc;
              if (req.isAuthenticated()) {
                  loggedin = true;
-                 userloc = "You're currently hooting at:" +req.user.nightclub.name;
+                 userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
              } else {
                   loggedin = false;
              }
