@@ -22,7 +22,7 @@ function isLoggedIn (req, res, next) {
     }
 
 function removeFromClub(checkinID, userID){
-           Nightclubs.findOne({'id':checkinID}, function(err,Nightclub){
+           Nightclubs.findOne({'nightclub.id':checkinID}, function(err,Nightclub){
             if (err) throw err;
             if(Nightclub){
                 //if nightclub is found remove user from array and save.
@@ -66,17 +66,15 @@ function addtoClub(checkinID, userID){
 
 app.route('/checkin/:checkinID')
   .get(isLoggedIn, function (req, res) {
-    //  console.log(req.user);
-
        Users.findOne({ 'id': req.id }, function (err, User) {
            console.log("the user is " +User.twitter.id);
-            if (err) throw err;
+            if (err) throw err;x
             if(User){
                 console.log("Old location:" + User.nightclub.nightclub);
                 if (User.nightclub.nightclub.length >0){
                     removeFromClub(User.nightclub.nightclub, User.twitter.id);
                 }
-                addtoClub(User.nightclub.nightclub, User.twitter.id);
+                addtoClub(req.params.checkinID, User.twitter.id);
                 User.nightclub.nightclub = req.params.checkinID;
                 console.log("New location:" + User.nightclub.nightclub);
                 User.save();
