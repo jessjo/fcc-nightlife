@@ -159,7 +159,8 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                                }
   	                                var data = {
   						                nightlife: biz,
-  					            	    loggedin: loggedin
+  					            	    loggedin: loggedin,
+  					            	    accountinfo: userloc
            		                	}
            		                	
            		            	    loadIndex(data, res);
