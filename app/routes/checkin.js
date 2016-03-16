@@ -21,8 +21,21 @@ function isLoggedIn (req, res, next) {
         }
     }
 
+function removeFromClub(checkinID){
+           Nightclubs.findOne({'id':checkinID}, function(err,Nightclub){
+            if (err) throw err;
+            if(Nightclub){
+                
+            } else {
+                
+            }
+        });
     
+}    
     
+function addtoClub(checkinID, userID){
+    
+}
 
 app.route('/checkin/:checkinID')
   .get(isLoggedIn, function (req, res) {
@@ -31,15 +44,16 @@ app.route('/checkin/:checkinID')
        Users.findOne({ 'id': req.id }, function (err, User) {
             if (err) throw err;
             if(User){
+                console.log("Old location:" + User.nightclub.nightclub);
                 User.nightclub.nightclub = req.params.checkinID;
+                console.log("New location:" + User.nightclub.nightclub);
+                User.save();
             } else{
                 console.log ("err no user");
             }
         });
         
-        Nightclubs.findOne({'id':req.params.checkinID}, function(err,Nightclub){
-            if (err) throw err;
-        });
+ 
         
        res.sendFile(path + '/public/checkin.html');
       
