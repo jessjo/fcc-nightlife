@@ -41,7 +41,7 @@ app.route('/')
              } else {
                   loggedin = false;
              }
-//	console.log(req.session.passport.user)
+
 		var data = {
                 loggedin: loggedin
            }
@@ -62,7 +62,7 @@ app.post('/',  upload.array(), function (req, res, next) {
              } else {
                   loggedin = false;
              }
-	//	console.log("user" + res.user);
+
 
 		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
@@ -87,7 +87,6 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     if (err) throw err;
                                     partygoers = 0;
                                     if(nightclub){
-                                        console.log(nightclub.nightclub.users)
                                         
                                         if(nightclub.nightclub.users > 0){
                                             partygoers = nightclub.nightclub.users.length;
@@ -101,7 +100,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                                          newNightclub.nightclub.id = id;
                                          newNightclub.nightclub.users = [];
                                          newNightclub.nightclub.name = name;
-                                         console.log (newNightclub);
+                                         console.log (newNightclub.nightclub.name);
                                          newNightclub.save(function (err, doc) {
                                              if (err) { throw err; }
                                         });
@@ -122,7 +121,8 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                             biz += "<p><b>"+partygoers + " people give a hoot!</b>"
                                 biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
   	                             biz +="</div>"
-  	                            //console.log(biz);
+  	                   
+  	                   
   	                            if (last){
   	                                var data = {
   						                nightlife: biz,

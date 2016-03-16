@@ -21,26 +21,35 @@ function isLoggedIn (req, res, next) {
         }
     }
 
-function removeFromClub(checkinID, userID, newcheckIN, callback){
+function removeFromClub(checkinID, userID, newcheckIN, res, callback){
+         
            Nightclubs.findOne({'nightclub.id':checkinID}, function(err,Nightclub){
             if (err) throw err;
             if(Nightclub){
+                //only check to remove if users are present
+                 if (Nightclub.nightclub.users.length >0){ 
                 //if nightclub is found remove user from array and save.
-                console.log ("before remove:" +Nightclub.nightclub.users  );
-                var user = Nightclub.nightclub.users.indexOf(userID);
-                Nightclub.nightclub.users.splice(user, 1);
-                console.log ("after remove:" +Nightclub.nightclub.users  );
-                Nightclub.save();
+                    console.log ("before remove:" +Nightclub.nightclub.users  );
+                    var user = Nightclub.nightclub.users.indexOf(userID);
+                    //only remove if user is found
+                    if (user >= 0){
+                        Nightclub.nightclub.users.splice(user, 1);
+                        console.log ("after remove:" +Nightclub.nightclub.users  );
+                        Nightclub.save();
+                    }
+                 }
             } else {
                 console.log ("nightclub not found - error?")
             }
         });
-    callback(newcheckIN, userID);
+        
+    callback(newcheckIN, userID, res);
 }    
     
-function addtoClub(checkinID, userID){
+function addtoClub(checkinID, userID, res){
          Nightclubs.findOne({'nightclub.id':checkinID}, function(err,Nightclub){
             if (err) throw err;
+             var data;
             if(Nightclub){
                 console.log("nightclub found");
                 //if nightclub is found just add user to users array
@@ -48,6 +57,9 @@ function addtoClub(checkinID, userID){
                 Nightclub.nightclub.users.push(userID);
                 console.log ("after add:" +Nightclub.nightclub.users  );
                 Nightclub.save();
+                data = {
+                    body: "<div>You're hooting at: "+Nightclub.nightclub.name+"</div>"
+                }
             } else {
                // create new nightclub object 
                console.log("nightclub not found");
@@ -61,6 +73,14 @@ function addtoClub(checkinID, userID){
                 console.log (newNightclub);
             }
             
+                //loads index with no nightlife data
+                fs.readFile('public/checkin.html', 'utf-8', function(error, source){
+                    var template = handlebars.compile(source);
+                    var html = template(data);
+                    res.send(html);
+           
+                }); 
+            
          });
 }
 
@@ -71,24 +91,15 @@ app.route('/checkin/:checkinID')
             if (err) throw err;
             if(User){
                 console.log("Old location:" + User.nightclub.nightclub);
-                if (User.nightclub.nightclub.length >0){
-                    removeFromClub(User.nightclub.nightclub, User.twitter.id, req.params.checkinID,addtoClub);
-                }
+                
+                removeFromClub(User.nightclub.nightclub, User.twitter.id, req.params.checkinID, res, addtoClub);
+                
     
                 User.nightclub.nightclub = req.params.checkinID;
                 console.log("New location:" + User.nightclub.nightclub);
                 User.save();
                 
-                var data = {
-                    body: "<div>You're hooting at: "+User.nightclub.nightclub+"</div>"
-                }
-                //loads index with no nightlife data
-                fs.readFile('public/checkin.html', 'utf-8', function(error, source){
-                    var template = handlebars.compile(source);
-                    var html = template(data);
-                    res.send(html);
-           
-                }); 
+               
             } else{
                 console.log ("err no user");
             }
