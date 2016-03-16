@@ -175,12 +175,19 @@ app.post('/',  upload.array(), function (req, res, next) {
   					
   				
   				
-  					            //inserts biz info via handlebars
-  				            	 
+
   					
 				})
 			   .catch(function (err) {
   					console.error(err);
+  					var data = {
+  						                nightlife: "Invalid location, please try another",
+  					            	    loggedin: loggedin,
+  					            	    accountinfo: userloc
+           		                	}
+           		                	
+           		            	    loadIndex(data, res);
+  					
 				});
 
 });
