@@ -33,11 +33,22 @@ var yelp = new Yelp({
 
 
 
+function loadIndex(data, res){
+     fs.readFile('public/index.html', 'utf-8', function(error, source){
+                var template = handlebars.compile(source);
+                var html = template(data);
+                res.send(html);
+           
+                }); 
+    
+}
+
 app.route('/')
 		.get(function (req, res) {
 		   var loggedin;
              if (req.isAuthenticated()) {
                  loggedin = true;
+                 console.log ("user location:" + req.user.nightclub.nightclub);
              } else {
                   loggedin = false;
              }
@@ -45,13 +56,10 @@ app.route('/')
 		var data = {
                 loggedin: loggedin
            }
-    //loads index with no nightlife data
-        fs.readFile('public/index.html', 'utf-8', function(error, source){
-                var template = handlebars.compile(source);
-                var html = template(data);
-                res.send(html);
-           
-                }); 
+            
+            loadIndex(data,res);
+            
+            
 		});
 
 app.post('/',  upload.array(), function (req, res, next) {
@@ -135,11 +143,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   						                nightlife: biz,
   					            	    loggedin: loggedin
            		                	}
-           		            	    fs.readFile('public/index.html', 'utf-8', function(error, source){
-            			                var template = handlebars.compile(source);
-                		                var html = template(data);
-                		                 res.send(html);
-               	            	    }); 
+           		            	    loadIndex(data, res);
   	                                
   	                            }
                             }
