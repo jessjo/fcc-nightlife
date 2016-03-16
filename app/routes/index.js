@@ -69,8 +69,7 @@ app.post('/',  upload.array(), function (req, res, next) {
 					var biz="<div>"
 					var last = false;
   					for (var i=0; i< data.businesses.length; i++){
-  					    //for each biz id I should find if the id exists. if it doesn't I can assume no one is there. I'm choosing to only create id on check in to save space.
-  					  
+
                             //all relevant info from API for businesses
                              var url =  data.businesses[i].url;
   						     var name = data.businesses[i].name;
@@ -92,11 +91,23 @@ app.post('/',  upload.array(), function (req, res, next) {
                                         
                                         if(nightclub.nightclub.users > 0){
                                             partygoers = nightclub.nightclub.users.length;
-                                        } 
+                                        }  
+                                        
                                     //TODO add in what to do if I'M going to the nightclub
                                     //if (req.user ...)
                     
+                                    } else {
+                                         var  newNightclub = new Nightclubs();
+                                         newNightclub.nightclub.id = id;
+                                         newNightclub.nightclub.users = [];
+                                         newNightclub.nightclub.name = name;
+                                         console.log (newNightclub);
+                                         newNightclub.save(function (err, doc) {
+                                             if (err) { throw err; }
+                                        });
                                     }
+                                    
+                                    //add nightclub this is the only place I get all the data (ex. name)
                                     callback(partygoers, url,name, imgURL, snippet, id, last);
                                 });
                             

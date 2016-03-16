@@ -74,9 +74,21 @@ app.route('/checkin/:checkinID')
                 if (User.nightclub.nightclub.length >0){
                     removeFromClub(User.nightclub.nightclub, User.twitter.id, req.params.checkinID,addtoClub);
                 }
+    
                 User.nightclub.nightclub = req.params.checkinID;
                 console.log("New location:" + User.nightclub.nightclub);
                 User.save();
+                
+                var data = {
+                    body: "<div>You're hooting at: "+User.nightclub.nightclub+"</div>"
+                }
+                //loads index with no nightlife data
+                fs.readFile('public/checkin.html', 'utf-8', function(error, source){
+                    var template = handlebars.compile(source);
+                    var html = template(data);
+                    res.send(html);
+           
+                }); 
             } else{
                 console.log ("err no user");
             }
@@ -84,7 +96,8 @@ app.route('/checkin/:checkinID')
         
  
         
-       res.sendFile(path + '/public/checkin.html');
+       //	console.log(req.session.passport.user)
+	
       
   })
 }
