@@ -86,12 +86,16 @@ app.post('/',  upload.array(), function (req, res, next) {
 
   		                         Nightclubs.findOne({ 'nightclub.id': data.businesses[i].id }, function (err, nightclub) {
                                     if (err) throw err;
+                                    partygoers = 0;
                                     if(nightclub){
-                                        partygoers = nightclub.users.length();
+                                        console.log(nightclub.nightclub.users)
+                                        
+                                        if(nightclub.nightclub.users > 0){
+                                            partygoers = nightclub.nightclub.users.length;
+                                        } 
                                     //TODO add in what to do if I'M going to the nightclub
                                     //if (req.user ...)
-                                    } else {
-                                         partygoers = 0;
+                    
                                     }
                                     callback(partygoers, url,name, imgURL, snippet, id, last);
                                 });
@@ -107,7 +111,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                             biz += "<p><b>"+partygoers + " people give a hoot!</b>"
                                 biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
   	                             biz +="</div>"
-  	                            console.log(biz);
+  	                            //console.log(biz);
   	                            if (last){
   	                                var data = {
   						                nightlife: biz,
