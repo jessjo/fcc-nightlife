@@ -95,7 +95,7 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
                             }   
                         
                             var formatting = function(partygoers, url, name, imgURL, snippet, id, last, userloc, locID){
-                                biz+="<div id='biz' class='row'><div class='col-xs-1'></div><div class='col-xs-3'><h4><a href='" + url +"'>";
+                                biz+="<div class='biz well'><div class='row'><div class='col-xs-1'></div><div class='col-xs-3'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'></div><div class='col-xs-6'><br/><br/>";
   	                            biz += snippet;
@@ -106,8 +106,8 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
   	                                     biz+= " (including you!)"
   	                                }
   	                            }
-                                biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
-  	                             biz +="</div><div class='col-xs-2'></div></div>"
+                                biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p></div>"
+  	                             biz +="<div class='col-xs-2'></div></div></div>"
   	                   
   	                   
   	                            if (last){
