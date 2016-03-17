@@ -43,8 +43,8 @@ function loadIndex(data, res){
     
 }
 
-function performLocSearch(req, res,loggedin,userloc, locID){
-    		yelp.search({ term: 'nightlife', location: req.body["location"] })
+function performLocSearch(req, res,loggedin, userloc, locID, location){
+    		yelp.search({ term: 'nightlife', location: location })
 				.then(function (data) {
 					var biz="<div>"
 					var last = false;
@@ -162,7 +162,8 @@ app.route('/')
                  if (req.user.nightclub.name != undefined){
                      if (req.user.nightclub.name.length > 0){
                         userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
-                         console.log("last search " + req.user.lastSearch)
+                         console.log("last search " + req.user.lastSearch);
+                         var locID = req.user.nightclub;
                          
                      } 
 
@@ -177,8 +178,12 @@ app.route('/')
                  loggedin: loggedin,
                  accountinfo: userloc
            }
-            
-         loadIndex(data,res);
+         if (loggedin && req.user.lastSearch.length >0 ){
+                console.log ("am I logged in" + loggedin)
+              performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
+         } else {
+            loadIndex(data,res);
+         }
             
             
 		});
@@ -205,7 +210,7 @@ app.post('/',  upload.array(), function (req, res, next) {
             
 
    //search yelp for nightlife in the location user requested
-   performLocSearch(req, res,loggedin,userloc, locID);
+   performLocSearch(req, res,loggedin,userloc, locID, req.body["location"]);
 
 });
 
