@@ -43,62 +43,8 @@ function loadIndex(data, res){
     
 }
 
-app.route('/')
-		.get(function (req, res) {
-		
-		   var loggedin;
-		   var userloc = "You're not hooting anywhere! Search to find your next hootspot."
-
-            if (req.isAuthenticated()) {
-                 loggedin = true;
-                 if (req.user.nightclub.name != undefined){
-                     if (req.user.nightclub.name.length > 0){
-                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
-                         console.log("last search" + req.user.lastSearch)
-                         
-                     } 
-
-                 }
-             } else {
-                  loggedin = false;
-             }
-
-
-
-		   var data = {
-                 loggedin: loggedin,
-                 accountinfo: userloc
-           }
-            
-         loadIndex(data,res);
-            
-            
-		});
-
-
-app.post('/',  upload.array(), function (req, res, next) {
-		console.log("location:" + req.body["location"]);
-		    var loggedin,locID;
-		     var userloc = "You're not hooting anywhere! Search to find your next hootspot."
-
-		    if (req.isAuthenticated()) {
-                 loggedin = true;
-                 if (req.user.nightclub.name != undefined){
-                     if (req.user.nightclub.name.length > 0){
-                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
-                        locID = req.user.nightclub;
-                        req.user.lastSearch = req.body["location"];
-                        console.log(req.user.lastSearch)
-                        req.user.save();
-                     } 
-                 }
-             } else {
-                  loggedin = false;
-             }
-            
-
-   //search yelp for nightlife in the location user requested
-		yelp.search({ term: 'nightlife', location: req.body["location"] })
+function performLocSearch(req, res,loggedin,userloc, locID){
+    		yelp.search({ term: 'nightlife', location: req.body["location"] })
 				.then(function (data) {
 					var biz="<div>"
 					var last = false;
@@ -202,7 +148,68 @@ app.post('/',  upload.array(), function (req, res, next) {
   					
 				});
 
+    
+}
+
+app.route('/')
+		.get(function (req, res) {
+		
+		   var loggedin;
+		   var userloc = "You're not hooting anywhere! Search to find your next hootspot."
+
+            if (req.isAuthenticated()) {
+                 loggedin = true;
+                 if (req.user.nightclub.name != undefined){
+                     if (req.user.nightclub.name.length > 0){
+                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                         console.log("last search " + req.user.lastSearch)
+                         
+                     } 
+
+                 }
+             } else {
+                  loggedin = false;
+             }
+
+
+
+		   var data = {
+                 loggedin: loggedin,
+                 accountinfo: userloc
+           }
+            
+         loadIndex(data,res);
+            
+            
+		});
+
+
+app.post('/',  upload.array(), function (req, res, next) {
+		console.log("location:" + req.body["location"]);
+		    var loggedin,locID;
+		     var userloc = "You're not hooting anywhere! Search to find your next hootspot."
+
+		    if (req.isAuthenticated()) {
+                 loggedin = true;
+                 if (req.user.nightclub.name != undefined){
+                     if (req.user.nightclub.name.length > 0){
+                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                        locID = req.user.nightclub;
+                        req.user.lastSearch = req.body["location"];
+                        req.user.save();
+                     } 
+                 }
+             } else {
+                  loggedin = false;
+             }
+            
+
+   //search yelp for nightlife in the location user requested
+   performLocSearch(req, res,loggedin,userloc, locID);
+
 });
+
+
 
 app.route('/login')
     .get(function (req, res) {
