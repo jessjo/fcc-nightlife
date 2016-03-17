@@ -149,9 +149,10 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
   	                            biz += "<p><b>"+partygoers + " people give a hoot!</b>"
-  	                            console.log(locID + "also" + id);
-  	                            if (id == locID.nightclub){
-  	                                biz+= " (including you!)"     
+  	                            if (locID){
+  	                                if (id == locID.nightclub){
+  	                                     biz+= " (including you!)"
+  	                                }
   	                            }
                                 biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
   	                             biz +="</div>"
