@@ -76,7 +76,7 @@ app.route('/')
 
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
-		    var loggedin;
+		    var loggedin,locID;
 		     var userloc = "You're not hooting anywhere! Search to find your next hootspot."
 
 		    if (req.isAuthenticated()) {
@@ -84,6 +84,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                  if (req.user.nightclub.name != undefined){
                      if (req.user.nightclub.name.length > 0){
                         userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                        locID = req.user.nightclub;
                      } 
                  }
              } else {
@@ -108,7 +109,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   				                last = true;
   				            }
                              
-                            var getTheSearch = function (callback, url, name, imgURL, snippet, id, last, userloc){
+                            var getTheSearch = function (callback, url, name, imgURL, snippet, id, last, userloc, locID){
                                 var partygoers;
 
   		                         Nightclubs.findOne({ 'nightclub.id': data.businesses[i].id }, function (err, nightclub) {
@@ -136,18 +137,22 @@ app.post('/',  upload.array(), function (req, res, next) {
                                     }
                                     
                                     //add nightclub this is the only place I get all the data (ex. name)
-                                    callback(partygoers, url,name, imgURL, snippet, id, last, userloc);
+                                    callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
                                 });
                             
                                 
                             }   
                         
-                            var formatting = function(partygoers, url, name, imgURL, snippet, id, last, userloc){
+                            var formatting = function(partygoers, url, name, imgURL, snippet, id, last, userloc, locID){
                                 biz+="<div id='biz'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'>";
   	                            biz += snippet;
-  	                             biz += "<p><b>"+partygoers + " people give a hoot!</b>"
+  	                            biz += "<p><b>"+partygoers + " people give a hoot!</b>"
+  	                            console.log(locID + "also" + id);
+  	                            if (id == locID.nightclub){
+  	                                biz+= " (including you!)"     
+  	                            }
                                 biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
   	                             biz +="</div>"
   	                   
@@ -168,7 +173,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            }
                             }
                             
-                            getTheSearch(formatting, url, name, imgURL, snippet, id, last, userloc);
+                            getTheSearch(formatting, url, name, imgURL, snippet, id, last, userloc, locID);
   				        
   		
   					}
@@ -181,7 +186,7 @@ app.post('/',  upload.array(), function (req, res, next) {
 			   .catch(function (err) {
   					console.error(err);
   					var data = {
-  						                nightlife: "Invalid location, please try another",
+  						                nightlife: "<p>We can't find anything at this location, Hoot on somewhere else. </p>",
   					            	    loggedin: loggedin,
   					            	    accountinfo: userloc
            		                	}
