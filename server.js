@@ -6,7 +6,7 @@ var checkins = require('./app/routes/checkin.js');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
-var Yelp = require('yelp');
+var path = require('path')
 
 var app = express();
 require('dotenv').load();
@@ -23,7 +23,7 @@ app.use(passport.session());
 
 	
 
-
+app.use('/public', express.static(process.cwd() + '/public'));
 
 
 mongoose.connect(process.env.MONGO_URI);

@@ -95,9 +95,9 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
                             }   
                         
                             var formatting = function(partygoers, url, name, imgURL, snippet, id, last, userloc, locID){
-                                biz+="<div id='biz' class='row'><div class='col-xs-4'><h4><a href='" + url +"'>";
+                                biz+="<div id='biz' class='row'><div class='col-xs-1'></div><div class='col-xs-3'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
-  	                            biz+= "<img src='" + imgURL+"'></div><div class='col-xs-8'>";
+  	                            biz+= "<img src='" + imgURL+"'></div><div class='col-xs-6'><br/><br/>";
   	                            biz += snippet;
   	                            biz += "<p><b>"+partygoers + " people give a hoot!</b>"
   	                            if (locID){
@@ -107,7 +107,7 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
   	                                }
   	                            }
                                 biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p>"
-  	                             biz +="</div></div>"
+  	                             biz +="</div><div class='col-xs-2'></div></div>"
   	                   
   	                   
   	                            if (last){
