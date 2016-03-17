@@ -54,6 +54,8 @@ app.route('/')
                  if (req.user.nightclub.name != undefined){
                      if (req.user.nightclub.name.length > 0){
                         userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                         console.log("last search" + req.user.lastSearch)
+                         
                      } 
 
                  }
@@ -85,6 +87,9 @@ app.post('/',  upload.array(), function (req, res, next) {
                      if (req.user.nightclub.name.length > 0){
                         userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
                         locID = req.user.nightclub;
+                        req.user.lastSearch = req.body["location"];
+                        console.log(req.user.lastSearch)
+                        req.user.save();
                      } 
                  }
              } else {
@@ -150,6 +155,7 @@ app.post('/',  upload.array(), function (req, res, next) {
   	                            biz += snippet;
   	                            biz += "<p><b>"+partygoers + " people give a hoot!</b>"
   	                            if (locID){
+      
   	                                if (id == locID.nightclub){
   	                                     biz+= " (including you!)"
   	                                }

@@ -13,7 +13,8 @@ var User = new Schema({
     nightclub :{
         nightclub: String,
         name: String
-    }
+    },
+    lastSearch : String
 });
 
 module.exports = mongoose.model('User', User);
