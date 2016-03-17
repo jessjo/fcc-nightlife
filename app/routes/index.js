@@ -118,7 +118,8 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
   	                                var data = {
   						                nightlife: biz,
   					            	    loggedin: loggedin,
-  					            	    accountinfo: userloc
+  					            	    accountinfo: userloc,
+  					            	    search: location
            		                	}
            		                	
            		            	    loadIndex(data, res);
@@ -156,13 +157,13 @@ app.route('/')
 		
 		   var loggedin;
 		   var userloc = "You're not hooting anywhere! Search to find your next hootspot."
-
+           var search = "Enter a location to search";
             if (req.isAuthenticated()) {
                  loggedin = true;
                  if (req.user.nightclub.name != undefined){
                      if (req.user.nightclub.name.length > 0){
                         userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
-                         console.log("last search " + req.user.lastSearch);
+                         search = req.user.lastSearch;
                          var locID = req.user.nightclub;
                          
                      } 
@@ -176,7 +177,8 @@ app.route('/')
 
 		   var data = {
                  loggedin: loggedin,
-                 accountinfo: userloc
+                 accountinfo: userloc,
+                 search: search
            }
          if (loggedin && req.user.lastSearch.length >0 ){
                 console.log ("am I logged in" + loggedin)
