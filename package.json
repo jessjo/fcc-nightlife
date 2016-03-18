@@ -1,8 +1,11 @@
 {
-  "name": "clementinejs-fcc",
-  "version": "1.0.1",
-  "description": "The elegant and lightweight boilerplate for full stack JavaScript.",
+  "name": "nightowl-nightlife-fcc",
+  "version": "1.0.0",
+  "description": "Nightowl nightlife app for FCC.",
   "main": "server.js",
+  "engines":{
+     "node": "4.2.4"
+  }
   "repository": {
     "type": "git",
     "url": "git+https://github.com/johnstonbl01/clementinejs-fcc"
