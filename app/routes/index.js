@@ -161,7 +161,7 @@ app.route('/')
                  loggedin = true;
                  if (req.user.nightclub.name != undefined){
                      if (req.user.nightclub.name.length > 0){
-                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                        userloc = "You're currently hooting at: <b>" +req.user.nightclub.name + "</b>. <a href='/checkout' class='btn'> Checkout</a>";
                          search = req.user.lastSearch;
                          var locID = req.user.nightclub;
                          
@@ -199,7 +199,7 @@ app.post('/',  upload.array(), function (req, res, next) {
                  loggedin = true;
                  if (req.user.nightclub.name != undefined){
                      if (req.user.nightclub.name.length > 0){
-                        userloc = "You're currently hooting at:" +req.user.nightclub.name + ". <a href='/checkout' class='btn'> Checkout</a>";
+                        userloc = "You're currently hooting at: <b>" +req.user.nightclub.name + "</b>. <a href='/checkout' class='btn'> Checkout</a>";
                         locID = req.user.nightclub;
                         req.user.lastSearch = req.body["location"];
                         req.user.save();
