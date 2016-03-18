@@ -51,6 +51,7 @@ function addtoClub(User, checkinID, userID, res){
             if (err) throw err;
              var data;
             if(Nightclub){
+                console.log(Nightclub);
                 console.log("nightclub found");
                 //if nightclub is found just add user to users array
                 console.log ("before add:" +Nightclub.nightclub.users  );

@@ -61,16 +61,20 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
   				            }
                              
                             var getTheSearch = function (callback, url, name, imgURL, snippet, id, last, userloc, locID){
-                                var partygoers;
+                                var partygoers = 0;
 
   		                         Nightclubs.findOne({ 'nightclub.id': data.businesses[i].id }, function (err, nightclub) {
                                     if (err) throw err;
-                                    partygoers = 0;
+                           
                                     if(nightclub){
-                                        
-                                        if(nightclub.nightclub.users > 0){
+                                        console.log(nightclub.nightclub.users);
+                                        if(nightclub.nightclub.users.length >= 1){
                                             partygoers = nightclub.nightclub.users.length;
-                                        }  
+                                            console.log(partygoers);
+                                             callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
+                                        }  else {
+                                             callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
+                                        }
                                         
                                    
                     
@@ -84,10 +88,11 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
                                          newNightclub.save(function (err, doc) {
                                              if (err) { throw err; }
                                         });
+                                         callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
                                     }
                                     
                                     //add nightclub this is the only place I get all the data (ex. name)
-                                    callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
+                                   
                                 });
                             
                                 
