@@ -26,7 +26,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "author": "Blake Johnston",
+  "author": "Jess Johnson",
   "license": "MIT",
   "dependencies": {
     "dotenv": "^1.2.0",
