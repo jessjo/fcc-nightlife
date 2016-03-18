@@ -19,23 +19,26 @@
 	</head>
 
 	<header>
-
-	</header>
-
-	<body>
-		{{#if loggedin}}
+	  	{{#if loggedin}}
 	      {{{accountinfo}}}
       {{else}}
-      	<p>Login or Register with:</p>
+      	<p>Login or Register with:
 
         <a href="/auth/twitter" class="btn"><span class="fa fa-twitter"></span> Twitter</a>
         <br/>
       {{/if}}
-       <p/><p/> <center>
+
+	</header>
+
+	<body>
+	
+       <center>
+         <img src="/public/img/HOOTOWL.png"><br/>
 	<form class="input-append" id="file-form" enctype="multipart/form-data" method="post"  action="/">
       <input type="text" name="location" placeholder="{{{search}}}">
       <input type="submit" value="What the hooooot?" id="submit" class="btn" />
       </form>
+      <br/><br/>
       {{{nightlife}}}
       </center>
 	</body>
