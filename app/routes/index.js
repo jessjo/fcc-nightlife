@@ -159,8 +159,11 @@ app.route('/')
            var search = "Enter a location to search";
             if (req.isAuthenticated()) {
                  loggedin = true;
+                 console.log(req.user);
                  if (req.user.nightclub.name != undefined){
+
                      if (req.user.nightclub.name.length > 0){
+                         
                         userloc = "You're currently hooting at: <b>" +req.user.nightclub.name + "</b>. <a href='/checkout' class='btn'> Checkout</a>";
                          search = req.user.lastSearch;
                          var locID = req.user.nightclub;

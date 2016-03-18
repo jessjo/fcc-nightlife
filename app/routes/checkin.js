@@ -90,28 +90,12 @@ function addtoClub(User, checkinID, userID, res){
 
 app.route('/checkin/:checkinID')
   .get(isLoggedIn, function (req, res) {
-       Users.findOne({ 'id': req.id }, function (err, User) {
-           console.log("the user is " +User.twitter.id);
-            if (err) throw err;
-            if(User){
-                console.log("Old location:" + User.nightclub.nightclub);
-                
-                removeFromClub(User, User.nightclub.nightclub, User.twitter.id, req.params.checkinID, res, addtoClub);
-                
-    
-                User.nightclub.nightclub = req.params.checkinID;
-                console.log("New location:" + User.nightclub.nightclub);
-                User.save();
-                
-               
-            } else{
-                console.log ("err no user");
-            }
-        });
-        
- 
-        
-       //	console.log(req.session.passport.user)
+       console.log(req.user);
+       console.log("Old location:" + req.user.nightclub.nightclub);
+       removeFromClub(req.user, req.user.nightclub.nightclub, req.user.twitter.id, req.params.checkinID, res, addtoClub);
+       req.user.nightclub.nightclub = req.params.checkinID;
+       console.log("New location:" + req.user.nightclub.nightclub);
+       req.user.save();
 	
       
   })
