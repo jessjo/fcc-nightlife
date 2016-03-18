@@ -46,7 +46,7 @@ function loadIndex(data, res){
 function performLocSearch(req, res,loggedin, userloc, locID, location){
     		yelp.search({ term: 'nightlife', location: location })
 				.then(function (data) {
-					var biz="<div>"
+					var biz="<div class = 'col-xs-12'>"
 					var last = false;
   					for (var i=0; i< data.businesses.length; i++){
 
@@ -72,8 +72,7 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
                                             partygoers = nightclub.nightclub.users.length;
                                         }  
                                         
-                                    //TODO add in what to do if I'M going to the nightclub
-                                    //if (req.user ...)
+                                   
                     
                                     } else {
                                         //create new nightclub.
@@ -106,7 +105,7 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
   	                                     biz+= " (including you!)"
   	                                }
   	                            }
-                                biz += "<a href='/checkin/"+id+"' class='btn btn-info'>Hoooot!</a></p></div>"
+                                biz += "    <a href='/checkin/"+id+"' class='btn'>Hoooot!</a></p></div>"
   	                             biz +="<div class='col-xs-2'></div></div></div>"
   	                   
   	                   
