@@ -179,9 +179,11 @@ app.route('/')
                  accountinfo: userloc,
                  search: search
            }
-         if (loggedin && req.user.lastSearch.length >0 ){
+         if (loggedin && req.user.lastSearch != undefined ){
+             if (req.user.lastSearch.length >0){
                 console.log ("am I logged in" + loggedin)
-              performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
+                performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
+             }
          } else {
             loadIndex(data,res);
          }
