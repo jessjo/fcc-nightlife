@@ -61,20 +61,17 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
   				            }
                              
                             var getTheSearch = function (callback, url, name, imgURL, snippet, id, last, userloc, locID){
-                                var partygoers = 0;
+                                var partygoers;
 
   		                         Nightclubs.findOne({ 'nightclub.id': data.businesses[i].id }, function (err, nightclub) {
                                     if (err) throw err;
-                           
+                                    partygoers = 0;
                                     if(nightclub){
-                                        console.log(nightclub.nightclub.users);
-                                        if(nightclub.nightclub.users.length >= 1){
+                                        //users = length of array
+                                        
+                                        if(nightclub.nightclub.users > 0){
                                             partygoers = nightclub.nightclub.users.length;
-                                            console.log(partygoers);
-                                             callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
-                                        }  else {
-                                             callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
-                                        }
+                                        }  
                                         
                                    
                     
@@ -88,22 +85,23 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
                                          newNightclub.save(function (err, doc) {
                                              if (err) { throw err; }
                                         });
-                                         callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
                                     }
                                     
                                     //add nightclub this is the only place I get all the data (ex. name)
-                                   
+                                    callback(partygoers, url,name, imgURL, snippet, id, last, userloc,locID);
                                 });
                             
                                 
                             }   
                         
                             var formatting = function(partygoers, url, name, imgURL, snippet, id, last, userloc, locID){
+                                //biz collects all business information in HTML
                                 biz+="<div class='biz well'><div class='row'><div class='col-xs-1'></div><div class='col-xs-3'><h4><a href='" + url +"'>";
                                 biz+= name +"</a></h4>";
   	                            biz+= "<img src='" + imgURL+"'></div><div class='col-xs-6'><br/><br/>";
   	                            biz += snippet;
   	                            biz += "<p><b>"+partygoers + " people give a hoot!</b>"
+  	                            //special case indicates where you're checkedIn
   	                            if (locID){
       
   	                                if (id == locID.nightclub){
@@ -164,11 +162,8 @@ app.route('/')
            var search = "Enter a location to search";
             if (req.isAuthenticated()) {
                  loggedin = true;
-                 console.log(req.user);
                  if (req.user.nightclub.name != undefined){
-
                      if (req.user.nightclub.name.length > 0){
-                         
                         userloc = "You're currently hooting at: <b>" +req.user.nightclub.name + "</b>. <a href='/checkout' class='btn'> Checkout</a>";
                          search = req.user.lastSearch;
                          var locID = req.user.nightclub;
@@ -187,11 +182,9 @@ app.route('/')
                  accountinfo: userloc,
                  search: search
            }
-         if (loggedin && req.user.lastSearch != undefined ){
-             if (req.user.lastSearch.length >0){
+         if (loggedin && req.user.lastSearch.length >0 ){
                 console.log ("am I logged in" + loggedin)
-                performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
-             }
+              performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
          } else {
             loadIndex(data,res);
          }
