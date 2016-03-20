@@ -17,7 +17,8 @@ require('./app/config/passport')(passport);
 app.use(session({
     secret: 'superdupersecretclubhouse',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie : { httpOnly: true, maxAge: 2419200000, search:"" }
 }));
 
 app.use(passport.initialize());
