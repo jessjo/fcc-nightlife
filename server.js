@@ -9,6 +9,8 @@ var session = require('express-session');
 var path = require('path')
 
 var app = express();
+app.use('/public', express.static(process.cwd() + '/public'));
+
 require('dotenv').load();
 require('./app/config/passport')(passport);
 
@@ -21,9 +23,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-	
-
-app.use('/public', express.static(process.cwd() + '/public'));
 
 
 mongoose.connect(process.env.MONGO_URI);
