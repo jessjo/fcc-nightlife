@@ -22,6 +22,7 @@ app.use(session({
     cookie : { httpOnly: true, maxAge: 2419200000, search:"empty" }
 }));
 
+app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 

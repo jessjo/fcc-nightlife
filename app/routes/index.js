@@ -157,7 +157,9 @@ function performLocSearch(req, res,loggedin, userloc, locID, location){
 
 app.route('/')
 		.get(function (req, res) {
-		   console.log("get saved search:" + req.session.cookie.search);
+		  // console.log("get saved search:" + req.session.cookie.search);
+
+		   console.log("Cookies: ", req.cookies)
 		   var loggedin;
 		   var userloc = "You're not hooting anywhere! Search to find your next hootspot."
            var search = "Enter a location to search";
@@ -197,7 +199,8 @@ app.route('/')
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
 		//set cookie for session
-	        req.session.cookie.search = req.body["location"] ;
+	        req.cookies.search = req.body["location"] ;
+	        console.log (req.cookies);
 		    var loggedin,locID;
 		     var userloc = "You're not hooting anywhere! Search to find your next hootspot."
 
