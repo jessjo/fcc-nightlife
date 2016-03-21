@@ -160,9 +160,14 @@ app.route('/')
 		  // console.log("get saved search:" + req.session.cookie.search);
 
 		   console.log("Cookies: ", req.cookies)
-		   var loggedin;
+		   var loggedin, search;
 		   var userloc = "You're not hooting anywhere! Search to find your next hootspot."
-           var search = "Enter a location to search";
+           if (req.cookies.search === undefined){
+              search = "Enter a location to search";
+           } else {
+               search = req.cookies.search;
+           }
+            
             if (req.isAuthenticated()) {
                  loggedin = true;
                  if (req.user.nightclub.name != undefined){
@@ -184,13 +189,21 @@ app.route('/')
                  loggedin: loggedin,
                  accountinfo: userloc,
                  search: search
-           }
-         if (loggedin && req.user.lastSearch.length >0 ){
-                console.log ("am I logged in" + loggedin)
-              performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
-         } else {
-            loadIndex(data,res);
-         }
+		   }
+		   
+             if(req.cookies.search !=undefined){
+                performLocSearch(req, res,loggedin,userloc, locID, req.cookies.search)
+             } else {
+                 if (loggedin && req.user.lastSearch.length >0 ){
+                    //if user is logged in and we know their search.
+                    console.log ("am I logged in" + loggedin)
+                     performLocSearch(req, res,loggedin,userloc, locID, req.user.lastSearch);
+                } else {
+                
+                    loadIndex(data,res);
+             
+                }
+             }
             
             
 		});
