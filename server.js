@@ -18,7 +18,7 @@ app.use(session({
     secret: 'superdupersecretclubhouse',
     resave: false,
     saveUninitialized: true,
-    cookie : { httpOnly: true, maxAge: 2419200000, search:"" }
+    cookie : { httpOnly: true, maxAge: 2419200000, search:"empty" }
 }));
 
 app.use(passport.initialize());
