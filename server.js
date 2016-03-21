@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var session = require('express-session');
 var path = require('path')
+var cookieParser = require('cookie-parser')
 
 var app = express();
 app.use('/public', express.static(process.cwd() + '/public'));

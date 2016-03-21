@@ -9,6 +9,7 @@ var fs = require('fs');
 var session = require('express-session');
 var Users = require('../models/users.js');
 var Nightclubs = require('../models/nightlife.js');
+var cookieParser = require('cookie-parser')
 
 
 
