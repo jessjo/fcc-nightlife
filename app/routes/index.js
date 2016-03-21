@@ -199,8 +199,8 @@ app.route('/')
 app.post('/',  upload.array(), function (req, res, next) {
 		console.log("location:" + req.body["location"]);
 		//set cookie for session
-	        req.cookies.search = req.body["location"] ;
-	        console.log (req.cookies);
+	        res.cookie('search',req.body["location"] );
+
 		    var loggedin,locID;
 		     var userloc = "You're not hooting anywhere! Search to find your next hootspot."
 
